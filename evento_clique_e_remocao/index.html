@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div style="height: 600px;width: 600px">
+    <canvas id="meuChart"></canvas>
+</div>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.js"></script>
+<script type="text/javascript">
+    var canvas = document.getElementById("meuChart");
+    var data = {
+        "anos": [
+            '2000',
+            '2001',
+            '2002',
+            '2003',
+            '2004',
+            '2005',
+            '2006',
+            '2007',
+            '2008',
+            '2009',
+            '2010',
+            '2011',
+            '2012',
+            '2013',
+            '2014',
+            '2015',
+            '2016',
+            '2017',
+        ],
+        "homens": [
+            86169657,
+            87336165,
+            88480530,
+            89601782,
+            90698483,
+            91769282,
+            92813167,
+            93829262,
+            94816963,
+            95776055,
+            96706703,
+            97610297,
+            98487258,
+            99336858,
+            100159507,
+            100955522,
+            101726102,
+            102471274,
+        ],
+        "mulheres": [
+            87278689,
+            88549064,
+            89795598,
+            91017326,
+            92213004,
+            93381524,
+            94521970,
+            95633493,
+            96715476,
+            97767914,
+            98791094,
+            99786721,
+            100755204,
+            101695856,
+            102609055,
+            103495127,
+            104355330,
+            105189655,
+
+        ]
+    };
+    var myChart = new Chart(canvas, {
+        type: 'horizontalBar',
+        data: {
+            labels: data.anos,
+            datasets: [
+                {
+                    label: 'Homens',
+                    data: data.homens,
+                    backgroundColor: 'blue',
+                    borderColor: 'green'
+                },
+                {
+                    label: 'Mulheres',
+                    data: data.mulheres,
+                    backgroundColor: 'pink',
+                    borderColor: 'green'
+                }
+            ]
+        },
+        options: {
+            //responsive: true,
+            //maintainAspectRatio: false,
+            scales: {
+                xAxes: [
+                    {stacked: true}
+                ],
+                yAxes: [
+                    {stacked: true}
+                ]
+            },
+            onClick: function(event,data){
+                if(data.length == 2){
+                   myChart.data.labels.splice(data[0]._index,1);
+                   myChart.data.datasets[0].data.splice(data[0]._index,1);
+                   myChart.data.datasets[1].data.push(data[0]._index,1);
+                   setTimeout(function(){
+                       myChart.update();
+                   },400);
+
+                }
+            }
+        }
+    });
+
+    function addData(){
+        var ano = document.getElementById('ano').value;
+        var homens = document.getElementById('homens').value;
+        var mulheres = document.getElementById('mulheres').value;
+        myChart.data.labels.push(ano);
+        myChart.data.datasets[0].data.push(homens);
+        myChart.data.datasets[1].data.push(mulheres);
+        myChart.data.datasets[1].backgroundColor = 'green';
+        myChart.update();
+    }
+</script>
+</body>
+</html>
